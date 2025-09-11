@@ -14,16 +14,26 @@ class MonicoolApp extends StatelessWidget {
       title: "Monicool",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFF121212), // fondo oscuro
+        scaffoldBackgroundColor: const Color(0xFF121212),
         primaryColor: const Color(0xFF1A1919),
         textTheme: const TextTheme(bodyMedium: TextStyle(color: Colors.white)),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.black54,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          hintStyle: const TextStyle(color: Colors.white70),
+        ),
       ),
       home: const HomeScreen(),
     );
   }
 }
 
-/// Pantalla principal
+//
+// Pantalla principal (Home)
+//
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -36,21 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
   String? _currentSong;
 
   final List<Map<String, String>> songs = [
-    {
-      "file": "ElTriste.mp3",
-      "title": "El Triste",
-      "img": "assets/img/eltriste.jpeg",
-    },
-    {
-      "file": "UnaCerveza.mp3",
-      "title": "Una Cerveza",
-      "img": "assets/img/unacerveza.jpeg",
-    },
-    {
-      "file": "Bolerito.mp3",
-      "title": "Bolerito",
-      "img": "assets/img/bolerito.jpeg",
-    },
+    {"file": "ElTriste.mp3", "title": "El Triste", "img": "assets/img/eltriste.jpeg"},
+    {"file": "UnaCerveza.mp3", "title": "Una Cerveza", "img": "assets/img/unacerveza.jpeg"},
+    {"file": "Bolerito.mp3", "title": "Bolerito", "img": "assets/img/bolerito.jpeg"},
   ];
 
   String _query = "";
@@ -73,23 +71,17 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF1A1919),
         title: Container(
-          margin: const EdgeInsets.symmetric(
-            vertical: 18, // más espacio arriba y abajo
-            horizontal: 16,
-          ),
-          child: Image.asset(
-            "assets/img/Monicool_logo.png",
-            height: 40, // menor altura para que no se corte
-            fit: BoxFit.contain,
-          ),
+          margin: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
+          child: Image.asset("assets/img/Monicool_logo.png", height: 40, fit: BoxFit.contain),
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.login, color: Colors.white),
             tooltip: "Iniciar sesión",
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Abrir pantalla de login")),
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
               );
             },
           ),
@@ -104,15 +96,9 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.all(12),
               child: TextField(
                 style: const TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.black54,
-                  prefixIcon: const Icon(Icons.search, color: Colors.white),
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.search, color: Colors.white),
                   hintText: "Buscar canción...",
-                  hintStyle: const TextStyle(color: Colors.white70),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
                 ),
                 onChanged: (val) => setState(() => _query = val),
               ),
@@ -123,11 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: Image.asset(
-                  "assets/img/poster.png",
-                  fit: BoxFit.fitWidth,
-                  width: double.infinity,
-                ),
+                child: Image.asset("assets/img/poster.png", fit: BoxFit.fitWidth, width: double.infinity),
               ),
             ),
 
@@ -138,32 +120,18 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: filteredSongs.length,
               itemBuilder: (context, index) {
                 final song = filteredSongs[index];
-                return MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
-                    onTap: () => _playSong(song["file"]!, song["title"]!),
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.black54,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage: AssetImage(song["img"]!),
-                        ),
-                        title: Text(
-                          song["title"]!,
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                        trailing: const Icon(
-                          Icons.play_arrow,
-                          color: Colors.white,
-                        ),
-                      ),
+                return GestureDetector(
+                  onTap: () => _playSong(song["file"]!, song["title"]!),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.black54,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: ListTile(
+                      leading: CircleAvatar(backgroundImage: AssetImage(song["img"]!)),
+                      title: Text(song["title"]!, style: const TextStyle(color: Colors.white)),
+                      trailing: const Icon(Icons.play_arrow, color: Colors.white),
                     ),
                   ),
                 );
@@ -180,10 +148,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     const Icon(Icons.play_arrow, color: Colors.white),
                     const SizedBox(width: 10),
                     Expanded(
-                      child: Text(
-                        "Reproduciendo: $_currentSong",
-                        style: const TextStyle(color: Colors.white),
-                      ),
+                      child: Text("Reproduciendo: $_currentSong",
+                          style: const TextStyle(color: Colors.white)),
                     ),
                     IconButton(
                       icon: const Icon(Icons.pause, color: Colors.white),
@@ -197,6 +163,202 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+//
+// Pantalla de Login
+//
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailCtrl = TextEditingController();
+  final _passwordCtrl = TextEditingController();
+
+  void _login() {
+    if (_formKey.currentState!.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Bienvenido, ${_emailCtrl.text}!")),
+      );
+      Navigator.pop(context);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF121212),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF1A1919),
+        title: const Text("Ingresar"),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            children: [
+              Image.asset("assets/img/Monicool_logo.png", height: 80),
+              const SizedBox(height: 20),
+              const Text("Ingrese sus datos",
+                  style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 30),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _emailCtrl,
+                      style: const TextStyle(color: Colors.white),
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(hintText: "Correo"),
+                      validator: (val) =>
+                          val != null && val.contains("@") ? null : "Ingrese un correo válido",
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _passwordCtrl,
+                      style: const TextStyle(color: Colors.white),
+                      obscureText: true,
+                      decoration: const InputDecoration(hintText: "Contraseña"),
+                      validator: (val) =>
+                          val != null && val.length >= 6 ? null : "Mínimo 6 caracteres",
+                    ),
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.purpleAccent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        onPressed: _login,
+                        child: const Text("Ingresar", style: TextStyle(fontSize: 16)),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const RegisterScreen()),
+                        );
+                      },
+                      child: const Text("¿No tienes cuenta? Registrarse",
+                          style: TextStyle(color: Colors.white70)),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+//
+// Pantalla de Registro
+//
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailCtrl = TextEditingController();
+  final _nameCtrl = TextEditingController();
+  final _passwordCtrl = TextEditingController();
+
+  void _register() {
+    if (_formKey.currentState!.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Usuario registrado: ${_nameCtrl.text}")),
+      );
+      Navigator.pop(context); // volver al login o home
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF121212),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF1A1919),
+        title: const Text("Registrarse"),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            children: [
+              const Text("Ingrese sus datos",
+                  style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 30),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _emailCtrl,
+                      style: const TextStyle(color: Colors.white),
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(hintText: "Correo"),
+                      validator: (val) =>
+                          val != null && val.contains("@") ? null : "Ingrese un correo válido",
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _nameCtrl,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(hintText: "Nombre de usuario"),
+                      validator: (val) =>
+                          val != null && val.isNotEmpty ? null : "Ingrese un nombre",
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _passwordCtrl,
+                      style: const TextStyle(color: Colors.white),
+                      obscureText: true,
+                      decoration: const InputDecoration(hintText: "Contraseña"),
+                      validator: (val) =>
+                          val != null && val.length >= 6 ? null : "Mínimo 6 caracteres",
+                    ),
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.purpleAccent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        onPressed: _register,
+                        child: const Text("Enviar", style: TextStyle(fontSize: 16)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
