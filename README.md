@@ -1,16 +1,49 @@
-# monicool_app
+# 🎶 Monicool App
 
-A new Flutter project.
+## 📌 Descripción del proyecto
+**Monicool** es una aplicación de **monitoreo musical** que permite a los usuarios conocer en tiempo real las reproducciones más sonadas de artistas y grupos musicales.  
+Además, muestra al usuario los **eventos más cercanos** según sus gustos musicales, creando una experiencia personalizada.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🚀 Funcionalidades actuales
+Hasta el momento, la aplicación cuenta con:
 
-A few resources to get you started if this is your first Flutter project:
+### 🔑 Autenticación
+- **Pantalla de inicio de sesión** (login) para que el usuario pueda acceder con sus credenciales.  
+- **Pantalla de registro** para que nuevos usuarios creen una cuenta.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 🎵 Música
+- Pantalla principal donde se puede:
+  - **Buscar canciones** por nombre.
+  - **Reproducir canciones** con controles básicos (play, pausa, continuar).
+  - Ver un listado de canciones disponibles con portada y título.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+## 🛠️ Tecnologías utilizadas
+- **Flutter** (framework principal para el desarrollo móvil y web).
+- **Dart** (lenguaje de programación).
+- **Audioplayers** (paquete para la reproducción de audio).
+- **Material Design** para la interfaz de usuario.
+
+---
+
+## 📱 Vistas actuales
+1. **Registro** → Formulario para ingresar correo, nombre de usuario y contraseña.  
+2. **Login** → Pantalla para iniciar sesión con correo y contraseña.  
+3. **Música** → Pantalla con buscador, lista de canciones y reproductor básico.  
+
+---
+
+## 📅 Próximos pasos
+- Conectar el sistema de login/registro con un **backend (PHP/MySQL)**.  
+- Mostrar en tiempo real los **artistas y canciones más escuchados**.  
+- Implementar un módulo de **eventos cercanos** basados en los gustos del usuario.  
+- Mejorar la interfaz con animaciones y un diseño más interactivo.  
+
+---
+
+## 👨‍💻 Equipo
+Desarrollado por:  
+- Hamer Angulo y Mauricio Pinto
